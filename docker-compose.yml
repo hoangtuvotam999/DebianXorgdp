@@ -1,0 +1,17 @@
+services:
+  desktop:
+    build: .
+    ports:
+      - "3389:3389"
+    shm_size: "1g"
+    restart: unless-stopped
+    volumes:
+      - home_data:/root          # Giữ toàn bộ home directory
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/3389"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  home_data:
